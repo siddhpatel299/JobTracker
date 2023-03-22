@@ -23,7 +23,7 @@ namespace BackEnd.Controllers
         [HttpPost]
         [Route("Register")]
         // POST: api/UserApi
-        public IActionResult Post([FromBody]t_user data)
+        public IActionResult Register([FromBody]t_user data)
         {
             return Ok(uh.Register(data));
         }
