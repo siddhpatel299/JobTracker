@@ -26,3 +26,6 @@ D:\JobTracker\BackEnd\obj\Debug\net6.0\refint\BackEnd.dll
 D:\JobTracker\BackEnd\obj\Debug\net6.0\BackEnd.pdb
 D:\JobTracker\BackEnd\obj\Debug\net6.0\BackEnd.genruntimeconfig.cache
 D:\JobTracker\BackEnd\obj\Debug\net6.0\ref\BackEnd.dll
+D:\JobTracker\BackEnd\bin\Debug\net6.0\MailKit.dll
+D:\JobTracker\BackEnd\bin\Debug\net6.0\MimeKit.dll
+D:\JobTracker\BackEnd\bin\Debug\net6.0\BouncyCastle.Crypto.dll

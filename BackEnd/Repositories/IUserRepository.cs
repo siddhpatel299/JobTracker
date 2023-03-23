@@ -16,5 +16,7 @@ namespace BackEnd.Repositories
         bool ChangeProfile(t_user data);
 
         int ChangePassword(ChangePassword data);
+
+        bool forget(string email,string pass);
     }
 }

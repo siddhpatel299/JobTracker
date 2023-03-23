@@ -121,7 +121,7 @@ input {
 	left: 0;
 	width: 50%;
 	opacity: 0;
-	z-index: 10;
+	z-index: 1;
 }
 
 .container.right-panel-active .sign-up-container {

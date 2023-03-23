@@ -6,15 +6,22 @@
 
 <h2>Login</h2>
 <script>
-    @* $(document).ready(function () {
-        
+    $(document).ready(function () {
+        $(".forgetpassword").hide();
+        $(".ccc").hide();
+        $(".aaa").hide();
 
+    });
 
-    }); *@
-    
-    function forget() {
-        const em = $("#txtFEmail").val();
+    function rm() {
+        $(".lll").hide();
+        $(".forgetpassword").show();
+    }
 
+    function Forget() {
+
+        const em = $("#FEmail").val();
+        console.log(em);
         let result = '';
         var length = 50;
         const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -31,7 +38,7 @@
         var setting = "";
 
         setting = {
-            "url": "http://localhost:5170/api/Email/sendemail?emailid=" + em + "&body=" + result,
+            "url": "https://localhost:7196/api/Email/sendemail?emailid=" + em + "&body=" + result,
             "method": "POST",
 
         };
@@ -39,7 +46,13 @@
 
 
             alert("Check your email");
-            window.location = "/User/forget";
+            $(".forgetpassword").hide();
+            $(".ccc").show();
+    @* window.location = "/User/forget"; *@
+
+
+
+
 
 
         });
@@ -67,142 +80,211 @@
         };
         console.log(setting);
         $.ajax(setting).done(function (response) {
-            alert("successfully Login");
+            if (response == true) {
+                alert("successfully Login");
+
+            }
 
         });
     }
-
-    function Register(){
-        var Contact ={
-      
-            userName : $("#username").val(),
-            email : $("#email").val(),
-            password : $("#password").val(),
-            gender : $('[name="gender"]:radio:checked').val(),
-            address : $("#address").val(),
-            city : $("#city option:selected").val(),
-            image : "aaa",
-            contact : 1231231231,
-            roleId : 1,
-            degree : $("#degree").val()
-
-
+    function otp() {
+        if ($("#OTP").val() == localStorage.getItem("hash")) {
+            $(".ccc").hide();
+            $(".aaa").show();
             
+        } else {
+            alert("OTP not matched");
+        }
+    }
+
+    function updatePassword(){
+        if ($("#RRPassword").val() == $("#CCPassword").val()) {
+                var email = localStorage.getItem("email"); 
+                    var pa = $("#RRPassword").val();
+
+                var setting = "";
+
+                setting = {
+                    "url": "https://localhost:7196/api/Email/forgetpassword?email=" + email + "&pass=" + pa,
+                    "method": "POST",
+
+                };
+
+                console.log(setting);
+                $.ajax(setting).done(function (response) {
+                    alert(response);
+                    if (response == false) {
+                        alert("There is error while updating the password.");
+                        location.reload();
+                    }
+                    else {
+                        alert("Password Successfully Updated");
+                        window.location = "/User/Login";
+                    }
+
+
+                });
+            } else {
+                alert("Password and Conform Password must be same");
+                return false;
+            }
+    }
+    function Register() {
+        var Contact = {
+
+
+            userName: $("#username").val(),
+            email: $("#email").val(),
+            password: $("#password").val(),
+            gender: $('[name="gender"]:radio:checked').val(),
+            address: $("#address").val(),
+            city: $("#city option:selected").val(),
+            contact: $("#contact").val(),
+            image: "a",
+            roleId: $("#role option:selected").val(),
+            roleName: "a",
+            degree: $("#degree").val()
+
+
+
         }
         console.log(Contact);
-        var setting="";
-       
-            console.log(Contact);
-            setting={
-                "url":"https://localhost:7196/api/User/Register",
-                "method":"POST",
-                "timeout":0,
-                "headers":{
-                    "Content-Type":"application/json"
-                },
-                "data":JSON.stringify(Contact),
+        var setting = "";
 
-            };
+        console.log(Contact);
+        setting = {
+            "url": "https://localhost:7196/api/User/Register",
+            "method": "POST",
+            "timeout": 0,
+            "headers": {
+                "Content-Type": "application/json"
+            },
+            "data": JSON.stringify(Contact),
+
+        };
         console.log(setting);
-        $.ajax(setting).done(function(response){
-            if(response == false){
-                alert("User Already Exist");
-                location.reload();
-            }
-            else{
-                alert("successfully Registered");
-                 window.location = "/User/Login"; 
-            }
-            
-             
-        });
+    @* debugger *@
+            $.ajax(setting).done(function (response) {
+                if (response == false) {
+                    alert("User Already Exist");
+                    location.reload();
+                }
+                else {
+                    alert("successfully Registered");
+                    window.location = "/User/Login";
+                }
+
+
+            });
     }
 </script>
 <html>
 <link href="~/css/Login.css" rel="stylesheet" />
 <div class="container" id="container">
-    
-		<div class="form-container sign-up-container">
-			<form method="post" action="#">
-				<h1>Create Account</h1>
-				@* <div class="social-container">
-					<a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
-					<a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
-					<a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
-				</div> *@
-				<span>or use your email for registration</span>
-				<input type="hidden" placeholder="userid" id="userid" />	
-				<input type="text" placeholder="User Name" id="username" />
-				<input type="email" placeholder="Email" id="email" />
-				<input type="password" placeholder="Password" id="password" />
-				<input type="password" placeholder=" Re-Enter Password" id="cpassword" />
-				<div style="display: flex; display: -webkit-flex; ">
-					<label style=" padding: 12px 15px;">Male</label><input type="radio" value="Male" name="gender" id="gender" />
-					<label style=" padding: 12px 15px;">Female</label><input type="radio" value="Female" name="gender"	id="gender" />
-					<label style=" padding: 12px 15px;">Others</label><input type="radio" value="Others" name="gender"	id="gender" />
-				</div>
-				<input type="text" placeholder="Address" id="address" />
-				<select name="city" class="" id="city">
-					<option value="">Select City</option>
-					<option value="Ahmedabad">Ahmedabad</option>
-					<option value="Anand">Anand</option>
-					<option value="Surat">Surat</option>
-					<option value="Vadodara">Vadodara</option>
-					<option value="Mehsana">Mehsana</option>
-				</select>
-				<!-- <input type="text" placeholder="User Name" id="c_username" /> -->
-				<input type="tel" placeholder="Contact" id="contact"/>
-				<select name="roleid" class="" id="role">
-					<option value="">Select Role</option>
-					<option value="1">JobProvider</option>
-					<option value="2">JobSeeker</option>
-				</select>
-				<!-- <input type="number" placeholder="Roleid" id="c_roleid" /> -->
-				<input type="text" placeholder="Degree" id="degree" />
-				<button onclick="Register()">Sign Up</button>
-			</form>
-		</div>
-       
-        
-		<div class="form-container sign-in-container">
-			<form action="#">
-				<h1>Sign in</h1>
-			
-				<span>or use your account</span>
-				<input id="LEmail" type="email" placeholder="Email" />
-				<input id="LPassword" type="password" placeholder="Password" />
-				<a href="#">Forgot your password?</a>
-				<button onclick="Login()">Sign In</button>
-			</form>
-		</div>
+
+    <div class="form-container sign-up-container">
+        <form method="post" action="#">
+            <h1>Create Account</h1>
+            @* <div class="social-container">
+            <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
+            <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
+            </div> *@
+            <span>or use your email for registration</span>
+            <input type="hidden" placeholder="userid" id="userid" />
+            <input type="text" placeholder="User Name" id="username" />
+            <input type="email" placeholder="Email" id="email" />
+            <input type="password" placeholder="Password" id="password" />
+            <input type="password" placeholder=" Re-Enter Password" id="cpassword" />
+            <div style="display: flex; display: -webkit-flex; ">
+                <label style=" padding: 12px 15px;">Male</label><input type="radio" value="Male" name="gender"
+                    id="gender" />
+                <label style=" padding: 12px 15px;">Female</label><input type="radio" value="Female" name="gender"
+                    id="gender" />
+                <label style=" padding: 12px 15px;">Others</label><input type="radio" value="Others" name="gender"
+                    id="gender" />
+            </div>
+            <input type="text" placeholder="Address" id="address" />
+            <select name="city" class="" id="city">
+                <option value="">Select City</option>
+                <option value="Ahmedabad">Ahmedabad</option>
+                <option value="Anand">Anand</option>
+                <option value="Surat">Surat</option>
+                <option value="Vadodara">Vadodara</option>
+                <option value="Mehsana">Mehsana</option>
+            </select>
+            <!-- <input type="text" placeholder="User Name" id="c_username" /> -->
+            <input type="tel" placeholder="Contact" id="contact" />
+            <select name="roleid" class="" id="role">
+                <option value="">Select Role</option>
+                <option value="1">JobProvider</option>
+                <option value="2">JobSeeker</option>
+            </select>
+            <!-- <input type="number" placeholder="Roleid" id="c_roleid" /> -->
+            <input type="text" placeholder="Degree" id="degree" />
+            <button type="button" onclick="Register()">Sign Up</button>
+        </form>
+    </div>
+
+
+    <div class="form-container sign-in-container">
+        <form action="#" method="post">
+            <h1>Sign in</h1>
+
+            <span>or use your account</span>
+            <input id="LEmail" type="email" placeholder="Email" class="lll" />
+            <input id="FEmail" type="email" placeholder="Email" class="forgetpassword" />
+            <input id="LPassword" type="password" placeholder="Password" class="lll" />
+            <a href="#FP" onclick="rm()" class="lll">Forgot your password?</a>
+            <button type="button" onclick="Login()" class="lll">Sign In</button>
+            <button type="button" class="forgetpassword" onclick="Forget()">Send Email</button>
+
+            <input id="OTP" type="text" placeholder="Secure Hash" class="ccc" />
+            <button type="button" class="ccc" onclick="otp()">Varify Secure Hash</button>
+
+            <input id="RRPassword" type="password" placeholder="New Password" class="aaa" />
+            <input id="CCPassword" type="password" placeholder="Confirm New Password" class="aaa" />
+            <button type="button" class="aaa" onclick="updatePassword()">Save Password</button>
+
+
+
+
+        </form>
+        <section id="FP">
+
         </section>
-		<div class="overlay-container">
-			<div class="overlay">
-				<div class="overlay-panel overlay-left">
-					<h1>Welcome Back!</h1>
-					<p>To keep connected with us please login with your personal info</p>
-					<button class="ghost" id="signIn">Sign In</button>
-				</div>
-				<div class="overlay-panel overlay-right">
-					<h1>Hello, Friend!</h1>
-					<p>Enter your personal details and start journey with us</p>
-					<button class="ghost" id="signUp">Sign Up</button>
-				</div>
-			</div>
-		</div>
-	</div>
+    </div>
+    </section>
+    <div class="overlay-container">
+        <div class="overlay">
+            <div class="overlay-panel overlay-left">
+                <h1>Welcome Back!</h1>
+                <p>To keep connected with us please login with your personal info</p>
+                <button class="ghost" id="signIn">Sign In</button>
+            </div>
+            <div class="overlay-panel overlay-right">
+                <h1>Hello, Friend!</h1>
+                <p>Enter your personal details and start journey with us</p>
+                <button class="ghost" id="signUp">Sign Up</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 <script>
-const signUpButton = document.getElementById('signUp');
-const signInButton = document.getElementById('signIn');
-const container = document.getElementById('container');
+    const signUpButton = document.getElementById('signUp');
+    const signInButton = document.getElementById('signIn');
+    const container = document.getElementById('container');
 
-signUpButton.addEventListener('click', () => {
-	container.classList.add("right-panel-active");
-});
+    signUpButton.addEventListener('click', () => {
+        container.classList.add("right-panel-active");
+    });
 
-signInButton.addEventListener('click', () => {
-	container.classList.remove("right-panel-active");
-});
+    signInButton.addEventListener('click', () => {
+        container.classList.remove("right-panel-active");
+    });
 
 </script>
 

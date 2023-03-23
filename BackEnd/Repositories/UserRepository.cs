@@ -156,5 +156,21 @@ namespace BackEnd.Repositories
                 return -1;
             }
         }
+
+        public bool forget(string email, string pass)
+        {
+            cn.Open();
+            NpgsqlCommand cm = new NpgsqlCommand(@"update public.t_user set c_password=@c_password where c_email=@c_email;",cn);
+            cm.Parameters.AddWithValue("@c_password",pass);
+            cm.Parameters.AddWithValue("@c_email",email);
+            // cm.ExecuteNonQuery();
+            // return true;
+            int n = Convert.ToInt32(cm.ExecuteScalar());
+            cn.Close();
+            if(n == 0){
+                return true;
+            }
+            return false;
+        }
     }
 }
